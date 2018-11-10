@@ -40,6 +40,7 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -71,14 +72,7 @@ import java.net.PasswordAuthentication;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -1217,6 +1211,9 @@ public abstract class AbstractAgent {
                   setConnectTimeout(httpConnectTimeout).
                   setConnectionRequestTimeout(httpConnectTimeout).
                   setSocketTimeout(httpRequestTimeout).build()).
+          setDefaultHeaders(
+                  Arrays.asList(
+                          new BasicHeader("Authorization", "Bearer " + token))).
           build();
       final ApacheHttpClient4Engine apacheHttpClient4Engine = new ApacheHttpClient4Engine(httpClient, true);
       // avoid using disk at all
